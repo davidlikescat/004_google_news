@@ -8,8 +8,12 @@ Google News 간단 수집 시스템 설정 (OpenAI 제외)
 import os
 from dotenv import load_dotenv
 
-# .env 파일 로드
-load_dotenv()
+# .env 파일 로드 (GCP 환경 고려)
+env_path = os.path.join(os.getcwd(), '.env')
+if os.path.exists(env_path):
+    load_dotenv(env_path)
+else:
+    print("⚠️ .env 파일을 찾을 수 없습니다. 환경 변수를 직접 확인합니다.")
 
 class Config:
     """Google News 간단 수집 시스템 설정"""
@@ -136,7 +140,10 @@ class Config:
                 missing.append(key)
         
         if missing:
-            raise ValueError(f"필수 환경변수가 설정되지 않았습니다: {', '.join(missing)}")
+            error_msg = f"필수 환경변수가 설정되지 않았습니다: {', '.join(missing)}"
+            print(f"❌ {error_msg}")
+            print("💡 GCP 환경 변수 설정을 확인하세요")
+            raise ValueError(error_msg)
         
         print("✅ 설정 검증 완료 (OpenAI 불필요)")
         return True
