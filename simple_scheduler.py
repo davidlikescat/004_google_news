@@ -30,8 +30,9 @@ class SimpleScheduler:
     
     def __init__(self):
         self.config = Config
-        self.script_dir = os.path.dirname(os.path.abspath(__file__))
-        self.main_script = os.path.join(self.script_dir, 'main.py')
+        # 현재 작업 디렉토리 사용
+        self.script_dir = os.getcwd()
+        self.main_script = 'main_004.py'  # main.py 대신 main_004.py 사용
         
         # 실행 상태 관리
         self.is_running = False
@@ -54,9 +55,9 @@ class SimpleScheduler:
             logger.info(f"📊 실행 횟수: {self.execution_count}")
             logger.info(f"⏰ 시작 시간: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
             
-            # main.py 실행
+            # main_004.py 실행
             result = subprocess.run(
-                [sys.executable, 'main.py'],
+                [sys.executable, self.main_script],
                 capture_output=True,
                 text=True,
                 timeout=600,  # 10분 타임아웃
